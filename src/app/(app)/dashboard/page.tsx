@@ -105,7 +105,7 @@ function Page() {
 
   let profileUrl: string = "";
   let copyToClipbord: () => void;
-  if (typeof window != undefined) {
+  if (typeof window != "undefined") {
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
     profileUrl = `${baseUrl}/u/${session?.user?.name}`;
     copyToClipbord = () => {
