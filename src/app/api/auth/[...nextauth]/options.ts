@@ -8,10 +8,10 @@ import bcrypt from "bcryptjs";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "Credentials",
+      id: "credentials",
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        user: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any): Promise<any> {
@@ -19,11 +19,12 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await userModel.findOne({
             $or: [
-              { email: credentials.username, username: credentials.username },
+              { email: credentials.username },
+              { username: credentials.username },
             ],
           });
           if (!user) {
-            throw new Error("No user found with this email");
+            throw new Error("No user found with this username");
           }
           if (!user.isVerified) {
             throw new Error("Please verify your account before logging in");
@@ -37,8 +38,8 @@ export const authOptions: NextAuthOptions = {
           } else {
             throw new Error("Incorrect password");
           }
-        } catch {
-          throw new Error("Unknown error ocurred");
+        } catch(err:any) {
+          throw new Error(err.message||"Unknown error ocurred");
         }
       },
     }),
@@ -62,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         session.user._id = token._id;
         session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
-        session.user.username = token.username;
+        session.user.name = token.username;
       }
       return session;
     },

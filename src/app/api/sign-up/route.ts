@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     if (existByUsername) {
       return Response.json({
-        succes: false,
+        success: false,
         message: "Username is already taken",
       });
     }
@@ -28,9 +28,9 @@ export async function POST(req: Request) {
     if (existByEmail) {
       if (existByEmail.isVerified) {
         return Response.json({
-          succes: false,
+          success: false,
           message: "This email is already taken",
-        });
+        },{status:400});
       } else {
         const hashedPassword = await bcrypt.hash(password, 10);
         const otpExpiry = new Date(Date.now() + 3600000);
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     if (!emailRespose.success) {
       return Response.json(
         {
-          succes: false,
+          success: false,
           message: emailRespose.message,
         },
         { status: 500 }
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.log("Error resgistering user", error);
-    Response.json(
+    return Response.json(
       {
         success: false,
         message: "Error resgistering user",

@@ -10,14 +10,15 @@ export const config = {
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const path = request.nextUrl.pathname;
-
+  console.log(path.startsWith("/sign-in"));
+  
   if (
     token &&
     (path.startsWith("/sign-in") ||
       path.startsWith("/sign-up") ||
       path.startsWith("/verify"))
   ) {
-    return NextResponse.redirect(new URL("/dashbord", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   if (!token && path.startsWith("/dashbord")) {
     return NextResponse.redirect(new URL("/sign-in", request.url));

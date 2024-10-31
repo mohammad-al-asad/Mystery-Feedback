@@ -20,6 +20,17 @@ export async function POST(request: Request) {
 
   try {
     const { isExceptingMessage } = await request.json();
+    console.log(isExceptingMessage);
+
+    if (isExceptingMessage == undefined) {
+      return Response.json(
+        {
+          success: false,
+          message: "There was an error retriving message exceptance",
+        },
+        { status: 404 }
+      );
+    }
     const user = await userModel.findByIdAndUpdate(
       sessionUser._id,
       {
@@ -27,6 +38,7 @@ export async function POST(request: Request) {
       },
       { new: true }
     );
+    console.log(user);
 
     if (!user) {
       return Response.json(
@@ -92,7 +104,10 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    console.log("There was an error retriving message exceptance status", error);
+    console.log(
+      "There was an error retriving message exceptance status",
+      error
+    );
     return Response.json(
       {
         success: false,

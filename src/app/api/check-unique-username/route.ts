@@ -6,7 +6,7 @@ import { z } from "zod";
 const usernameQuerySchema = z.object({
   username: usernameValidation,
 });
-export default async function GET(request: Request) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const queryParams = {
     username: searchParams.get("username"),

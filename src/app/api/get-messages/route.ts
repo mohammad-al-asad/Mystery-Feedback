@@ -34,7 +34,7 @@ export async function GET() {
       ])
       .exec();
 
-    if (!user || user.length === 0) {
+    if (typeof user !== "object") {
       return Response.json(
         { success: false, message: "User not found" },
         { status: 404 }
@@ -45,12 +45,12 @@ export async function GET() {
       {
         success: true,
         message: "Getting messages succesfull",
-        messages: user[0].messages,
+        messages: user[0]?.messages|| [],
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log("There was an getting message", error);
+    console.log("There was an error getting message", error);
     return Response.json(
       {
         success: false,

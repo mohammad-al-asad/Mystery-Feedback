@@ -3,6 +3,6 @@ import { Message } from "@/model/user";
 export interface apiResponse {
   success: boolean;
   message: string;
-  isAcceptingMessage?: boolean;
+  isExceptingMessage?: boolean;
   messages?: Array<Message>;
 }
